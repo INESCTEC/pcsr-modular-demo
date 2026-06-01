@@ -192,5 +192,11 @@ Run scripts/run_pipeline.py from the repo root so Python can find the pcsr/ pack
 
 Author: Ifigeneia Lamprianidou
 
-If you use this code in academic work, please cite {remember to include the paper once it is accepted).
+If you use this code in academic work, please cite:
+
+I. Lamprianidou, F. Fernandes, R. J. Bessa, and P. Papadopoulos,
+“Symbolic Explainer of Power System Dynamics,”
+in Proc. 24th Power Systems Computation Conference (PSCC), 
+Limassol, Cyprus, Jun. 8–12, 2026.
+
 

@@ -6,7 +6,6 @@ This software is authored by:
 Ifigeneia Lamprianidou,  Francisco Fernandes, Ricardo Bessa, and Panagiotis Papadopoulos
 
 
-
 You can reach INESC TEC Technology Transfer Office (TTO) at tech-transfer@inectec.pt, or
 Campus da Faculdade de Engenharia da Universidade do Porto
 Rua Dr. Roberto Frias

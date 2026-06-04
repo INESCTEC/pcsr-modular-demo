@@ -3,7 +3,9 @@ Copyright (C) <2025-2026>, INESC TEC [GB1.1]
 Piecewise Symbolic Regression (PC-SR): Piecewise Symbolic Regression (Pc-SR) framework that automatically discovers regime-conditioned equations linking system variables to CCT.
 
 This software is authored by:
-Ifigeneia Lamprianidou
+Ifigeneia Lamprianidou,  Francisco Fernandes, Ricardo Bessa, and Panagiotis Papadopoulos
+
+
 
 You can reach INESC TEC Technology Transfer Office (TTO) at tech-transfer@inectec.pt, or
 Campus da Faculdade de Engenharia da Universidade do Porto

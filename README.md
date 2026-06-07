@@ -298,7 +298,7 @@ Contributors are expected to follow these guidelines before submitting pull requ
 
 ### Acknowledgements
 
-This work supports research in explainable artificial intelligence, symbolic regression, and power system dynamics modelling.
+This work supports research in explainable artificial intelligence, symbolic regression, and power system transient stability. The work was developped within the context of the ENFIELD project.
 
 ---
 

@@ -1,202 +1,315 @@
-## Credits
-
-This project was developed by Ifigeneia Lamprianidou (https://github.com/ifiglampr).
-
-
 # Piecewise Symbolic Regression (Pc-SR) – Modular Demo
 
-This repo contains a two-stage pipeline:
+## Description
 
-- **Stage-1:** CART (Decision Tree Regressor) pruning + per-leaf PySR, alpha selection, and bundle save.
-- **Stage-2 (optional):** Post-hoc merging of similar leaves via text embeddings + numeric/structural checks, with retraining on merged clusters.
+Piecewise Symbolic Regression (Pc-SR) is a modular framework for building interpretable symbolic regression models through a combination of decision-tree partitioning and symbolic equation discovery. The project uses a two-stage workflow that first partitions data into meaningful regions and then fits symbolic expressions to each region, optionally merging similar regions to produce more compact and interpretable models.
 
----
+This project is intended for researchers, data scientists, and engineers interested in explainable artificial intelligence (XAI), symbolic regression, and interpretable machine learning.
 
-## Structure
-
-pcsr/
-init.py # re-exports public API
-DTR_ccp_a_prune_SR_stage1.py # Stage-1 (alpha sweep, per-leaf SR, selection, bundle save)
-posthoc_merge.py # Stage-2 (embeddings + numeric/structural checks + retrain on merges)
-
-scripts/
-run_pipeline.py # ENTRY POINT – edit paths/settings here and run
-
-data/
-synthetic_dataset.csv # demo data (features + 'y' target)
-
-outputs/ # created automatically; holds all artifacts
-
-
+The software addresses the challenge of accurately modelling complex nonlinear systems while maintaining model transparency. By combining Decision Tree Regression (CART) and symbolic regression, Pc-SR provides human-readable equations that can help users understand system behaviour and generate insights that traditional black-box models often cannot provide.
 
 ---
 
-## Quick Start
+# 1. Project Status
 
-### 1) Create a fresh environment (Python 3.10 recommended)
+**Status:** In Progress
+
+ Core functionalities for piecewise symbolic regression and post-hoc model merging are implemented and operational.
+
+---
+
+# 2. Technology Stack
+
+### Programming Language
+
+* Python 3.10
+
+### Frameworks and Libraries
+
+* PySR
+* Scikit-learn
+* SymPy
+* Sentence Transformers
+* PyTorch
+* Joblib
+* Matplotlib
+* NumPy
+* Pandas
+
+### Additional Technologies
+
+* Julia Backend (required by PySR)
+
+### Execution Model
+
+* Standalone Python application
+* Modular package structure for reuse and extension
+
+---
+
+# 3. Dependencies
+
+Dependencies should be installed using the project's `requirements.txt` file.
+
+### Core Dependencies
+
+* numpy
+* pandas
+* scikit-learn
+* matplotlib
+* sympy
+* pysr
+* joblib
+* sentence-transformers
+* torch
+
+### Special Requirements
+
+PySR requires a Julia backend installation.
+
+If PySR is being executed for the first time on a machine, Julia package compilation may occur automatically and can take several minutes.
+
+Refer to the official PySR installation documentation if additional setup is required.
+
+---
+
+# 4. Installation
+
+## Clone the Repository
+
+```bash
+git clone <repository-url>
+cd <repository-name>
+```
+
+## Create and Activate a Virtual Environment
 
 ```bash
 python -m venv .venv
+```
 
-# Windows
+### Windows
+
+```bash
 .venv\Scripts\activate
 ```
 
+### Linux/macOS
 
+```bash
+source .venv/bin/activate
+```
 
-### 2) Install dependencies
+## Install Dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-### 3) Set your dataset path --> Open scripts/run_pipeline.py.
+## Configure the Dataset
 
-Edit the USER SETTINGS at the top:
+Open:
 
-DATA_PATH → CSV file (demo: data/synthetic_dataset.csv)
+```text
+scripts/run_pipeline.py
+```
 
-TARGET_COL → target column name (demo: "y")
+Update the user settings:
 
-Optionally set FEATURES (list of column names to use) or leave None to use all non-target columns.
-
-Optionally set DROP_COLS to drop columns before feature selection.
-
-Choose output dir with OUTDIR.
-
-Toggle Stage-2 merging with DO_MERGE = True/False.
-
+* `DATA_PATH` – path to the CSV dataset
+* `TARGET_COL` – target variable name
+* `FEATURES` – optional feature subset
+* `DROP_COLS` – optional columns to remove
+* `OUTDIR` – output directory
+* `DO_MERGE` – enable or disable Stage-2 merging
 
 ---
 
-### 4) Run
+# 5. Usage
 
---In your IDE: right-click scripts/run_pipeline.py → Run.
+## Running the Pipeline
 
---Or from terminal: python scripts/run_pipeline.py
+### From an IDE
 
-Artifacts will be written under OUTDIR (default outputs/).
+Run:
 
-### What Stage-1 Saves
-Inside OUTDIR/final_bundle/:
+```text
+scripts/run_pipeline.py
+```
 
-chosen_Pc-SR_model_tree.joblib – the selected pruned DecisionTreeRegressor
+### From the Terminal
 
-chosen_Pc-SR_model_leaves.json – per-leaf equations & diagnostics (leaf id, n, complexity, MSE)
+```bash
+python scripts/run_pipeline.py
+```
 
-chosen_Pc-SR_model_leaves.csv – same as CSV
+Results will be stored in the configured output directory (`outputs/` by default).
 
-chosen_Pc-SR_model_config.json – full nested config used
+## Workflow Overview
 
-chosen_Pc-SR_model.manifest.json – small index of the above
+### Stage 1: Piecewise Symbolic Regression
 
-If cfg.out.save_* flags are enabled, you may also see:
+1. CART pruning and alpha selection.
+2. Per-leaf symbolic regression using PySR.
+3. Model selection and diagnostics.
+4. Export of trained models and metadata.
 
-trees_by_alpha/alpha_*/ folders
+### Stage 2 (Optional): Post-hoc Merging
 
-alpha_summary_raw.csv, alpha_summary.csv (normalized)
+1. Initialize clusters from Stage-1 leaves.
+2. Compare symbolic equations using embeddings and structural similarity.
+3. Validate candidate merges numerically.
+4. Retrain symbolic models for merged clusters.
+5. Iterate until convergence.
 
-optional tree PNGs, leaf CSVs, and prediction CSVs
+---
 
-### Stage-2 (Optional): Post-hoc Merge
-If DO_MERGE = True, Stage-2 will:
+# 6. Architecture Diagrams
 
-initialize clusters from Stage-1 leaves,
+Architecture diagrams should be stored under:
 
-compare per-cluster equations via text embeddings + structure checks,
+```text
+docs/diagrams/
+```
 
-validate merges numerically (cross-MSE across clusters),
+Recommended diagrams include:
 
-retrain PySR on the merged clusters each iteration,
+### UML Diagrams
 
-stop when no more merges pass the criteria.
+* Class Diagram
+* Sequence Diagram
+* Component Diagram
 
-Saves to OUTDIR/final_bundle/posthoc_merged/:
+### Flowcharts
 
-merged_Pc-SR_model.json – final cluster equations + initial→final mapping
+* Process Flowchart
+* Decision Flowchart
+* Data Flow Diagram
 
-### Key Flags (where to tweak)
-Stage-1 (in DTR_ccp_a_prune_SR_stage1.py, via Config)
-cfg.tree
+Suggested files:
 
-base_depth, min_samples_per_leaf – CART shape
+```text
+docs/diagrams/class-diagram.png
+docs/diagrams/sequence-diagram.png
+docs/diagrams/component-diagram.png
+docs/diagrams/process-flowchart.png
+```
 
-max_points – max α candidates (distinct partitions)
+*No architecture diagrams are currently included in the repository.*
 
-random_state – reproducibility
+---
 
-cfg.pysr
+# 7. Known Issues
 
-niterations, maxsize – PySR search budget
+### PySR Initialization
 
-binary_operators, unary_operators, nested_constraints – search space
+The first execution may be slow due to Julia package installation and compilation.
 
-deterministic=True, parallelism="serial", random_state – reproducibility
+### Package Import Errors
 
-output_directory, run_id_prefix, keep_runs, keep_on_error – PySR I/O
+If the following error appears:
 
-cfg.score
-
-w=(MSE, CVaR, Lp) – composite score weights
-
-cvar_beta – tail risk quantile (e.g., 0.95)
-
-lp_p – Lp aggregation order across leaves
-
-tol_select – choose simplest within +X% of best score
-
-robust_percentile – min/robust-min normalization anchor
-
-cfg.out
-
-outdir – root for artifacts
-
-save_tree_png, save_tree_text, save_leaf_csv, save_preds_csv – extra artifacts
-
-verbose – "QUIET" | "INFO" | "DEBUG"
-
-### Orchestration
-
-val_frac=None – train MSE only; set to e.g. 0.2 for per-leaf train/val
-
-n_jobs – joblib workers for parallel per-leaf fits (keep moderate on Windows)
-
-### Stage-2 (in run_pipeline.py and used by posthoc_merge.py)
-STRICT_SIM – cosine similarity to auto-merge (e.g., 0.90)
-
-LOOSE_SIM – if above this but below strict, do numeric cross-MSE test (e.g., 0.80)
-
-MSE_THRESH – average cross-MSE needed to allow merge (e.g., 1e-2)
-
-MAX_ITERS – max merge iterations
-
-(advanced) EMBEDDER_MODEL – sentence-transformer name (default all-MiniLM-L6-v2)
-
-### Requirements
-Python 3.10
-
-See requirements.txt for exact versions. Core libs:
-
-numpy, pandas, scikit-learn, matplotlib
-
-sympy, pysr (with Julia backend installed), joblib
-
-sentence-transformers, torch (CPU is fine)
-
-Note (PySR/Julia): PySR uses a Julia backend. If you haven’t used PySR before on this machine, the first run may trigger package compilation (one-time). Follow PySR’s install notes if needed.
-
-Troubleshooting
+```text
 ModuleNotFoundError: pcsr
-Run scripts/run_pipeline.py from the repo root so Python can find the pcsr/ package. In PyCharm, set the Working Directory to the project root in your Run Configuration.
+```
 
+Ensure that:
 
+* The script is executed from the repository root.
+* The project root is configured as the working directory in your IDE.
 
+### Windows Parallelization
 
-Author: Ifigeneia Lamprianidou
+Using excessive parallel workers may lead to instability or reduced performance. Moderate values for `n_jobs` are recommended.
+
+---
+
+# 8. License
+
+A LICENSE file must be included before public release.
+
+**License:** To be determined.
+
+Example:
+
+```text
+MIT License
+```
+
+---
+
+# 9. Documentation and Resources
+
+## Repository Structure
+
+```text
+pcsr/
+├── __init__.py
+├── DTR_ccp_a_prune_SR_stage1.py
+└── posthoc_merge.py
+
+scripts/
+└── run_pipeline.py
+
+data/
+└── synthetic_dataset.csv
+
+outputs/
+```
+
+## Academic Reference
 
 If you use this code in academic work, please cite:
 
-I. Lamprianidou, F. Fernandes, R. J. Bessa, and P. Papadopoulos,
-“Symbolic Explainer of Power System Dynamics,”
-in Proc. 24th Power Systems Computation Conference (PSCC), 
-Limassol, Cyprus, Jun. 8–12, 2026.
+> I. Lamprianidou, F. Fernandes, R. J. Bessa, and P. Papadopoulos,
+> “Symbolic Explainer of Power System Dynamics,”
+> Proceedings of the 24th Power Systems Computation Conference (PSCC),
+> Limassol, Cyprus, June 8–12, 2026.
 
+Additional resources, tutorials, API documentation, and demonstration videos may be added in future releases.
 
+---
+
+# 10. Community Standards and Contribution
+
+Before contributing, please review the organisation-wide governance documents:
+
+* Code of Conduct
+* Contributing Guidelines
+* Reporting Template
+* Security Policy
+
+These documents define:
+
+* Expected community behaviour
+* Contribution workflows
+* Vulnerability disclosure procedures
+* Security reporting practices
+
+Contributors are expected to follow these guidelines before submitting pull requests or reporting issues.
+
+---
+
+# 11. Credits and Acknowledgements
+
+### Contributors
+
+* Ifigeneia Lamprianidou – Lead Developer
+
+### Acknowledgements
+
+This work supports research in explainable artificial intelligence, symbolic regression, and power system dynamics modelling.
+
+---
+
+# 12. Contacts
+
+For support, collaboration opportunities, or project-related inquiries:
+
+**Ifigeneia Lamprianidou**
+
+GitHub: https://github.com/ifiglampr
+
+Email: francisco.s.fernandes@inesctec.pt
+
+GitHub issues may also be used for reporting bugs and requesting enhancements if the repository is actively monitored.

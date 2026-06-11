@@ -226,13 +226,7 @@ Using excessive parallel workers may lead to instability or reduced performance.
 
 # 8. License
 
-A LICENSE file must be included before public release.
-
-**License:** To be determined.
-
-Example:
-
-```text
+```
 MIT License
 ```
 

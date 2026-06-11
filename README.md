@@ -12,9 +12,9 @@ The software addresses the challenge of accurately modelling complex nonlinear s
 
 # 1. Project Status
 
-**Status:** In Progress
+**Status:** Stable / No longer actively developed
 
- Core functionalities for piecewise symbolic regression and post-hoc model merging are implemented and operational.
+ Core functionalities for piecewise symbolic regression and post-hoc model merging are implemented and operational. 
 
 ---
 
@@ -269,9 +269,9 @@ Additional resources, tutorials, API documentation, and demonstration videos may
 Before contributing, please review the organisation-wide governance documents:
 
 * [Code of Conduct](https://github.com/INESCTEC/.github/blob/main/documents/code_of_conduct.md)
-* Contributing Guidelines
-* Reporting Template
-* Security Policy
+* [Contributing Guidelines](https://github.com/INESCTEC/.github/blob/main/documents/contributing.md)
+* [Reporting Template](https://github.com/INESCTEC/.github/blob/main/documents/reporting_template.md)
+* [Security Policy](https://github.com/INESCTEC/.github/blob/main/documents/security.md)
 
 These documents define:
 

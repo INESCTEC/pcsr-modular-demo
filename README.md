@@ -268,7 +268,7 @@ Additional resources, tutorials, API documentation, and demonstration videos may
 
 Before contributing, please review the organisation-wide governance documents:
 
-* Code of Conduct
+* [Code of Conduct](https://github.com/INESCTEC/.github/blob/main/documents/code_of_conduct.md)
 * Contributing Guidelines
 * Reporting Template
 * Security Policy
